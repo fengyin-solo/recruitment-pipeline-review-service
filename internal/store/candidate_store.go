@@ -6,7 +6,7 @@ func (s *MemoryStore) CreateCandidate(c *model.Candidate) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	for _, exist := range s.candidates {
-		if exist.Email == c.Email && exist.Status == c.Status {
+		if exist.Email == c.Email {
 			return ErrConflict
 		}
 	}

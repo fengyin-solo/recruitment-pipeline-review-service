@@ -61,7 +61,8 @@ func (f CandidateFilter) Match(c *Candidate) bool {
 	}
 	if f.Keyword != "" {
 		k := strings.ToLower(strings.TrimSpace(f.Keyword))
-		if k != "" && !strings.Contains(strings.ToLower(c.Name), k) {
+		if k != "" && !strings.Contains(strings.ToLower(c.Name), k) &&
+			!strings.Contains(strings.ToLower(c.Email), k) {
 			return false
 		}
 	}

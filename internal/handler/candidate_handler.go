@@ -46,7 +46,7 @@ func (s *Server) createCandidate(w http.ResponseWriter, r *http.Request) {
 func (s *Server) listCandidates(w http.ResponseWriter, r *http.Request) {
 	pp := httpx.ParsePagination(r, 20, s.maxPageSize())
 	filter := model.CandidateFilter{
-		Keyword: r.URL.Query().Get("q"),
+		Keyword: r.URL.Query().Get("keyword"),
 		Status:  r.URL.Query().Get("status"),
 	}
 	items, total, err := s.svc.ListCandidates(filter, pp.Page, pp.Size)
