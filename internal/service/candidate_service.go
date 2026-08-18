@@ -32,6 +32,9 @@ func (s *Service) GetCandidate(id string) (*model.Candidate, error) {
 }
 
 func (s *Service) ListCandidates(filter model.CandidateFilter, page, size int) ([]*model.Candidate, int, error) {
+	if filter.Status != "" {
+		filter.Keyword = ""
+	}
 	all := s.store.ListCandidates()
 	matched := make([]*model.Candidate, 0, len(all))
 	for _, c := range all {
