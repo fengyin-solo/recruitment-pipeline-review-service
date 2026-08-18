@@ -22,6 +22,14 @@ func CanTransitionInterview(from, to string) bool {
 	return false
 }
 
+func (x *Interview) Clone() *Interview {
+	if x == nil {
+		return nil
+	}
+	cp := *x
+	return &cp
+}
+
 type Interview struct {
 	ID          string    `json:"id"`
 	JobID       string    `json:"job_id"`

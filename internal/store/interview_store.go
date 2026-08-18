@@ -5,7 +5,7 @@ import "recruit/internal/model"
 func (s *MemoryStore) CreateInterview(i *model.Interview) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.interviews[i.ID] = i
+	s.interviews[i.ID] = i.Clone().Clone()
 	return nil
 }
 
@@ -16,7 +16,7 @@ func (s *MemoryStore) GetInterview(id string) (*model.Interview, error) {
 	if !ok {
 		return nil, ErrNotFound
 	}
-	return i, nil
+	return i.Clone(), nil
 }
 
 func (s *MemoryStore) ListInterviews() []*model.Interview {
@@ -24,7 +24,7 @@ func (s *MemoryStore) ListInterviews() []*model.Interview {
 	defer s.mu.RUnlock()
 	list := make([]*model.Interview, 0, len(s.interviews))
 	for _, i := range s.interviews {
-		list = append(list, i)
+		list = append(list, i.Clone())
 	}
 	return list
 }
