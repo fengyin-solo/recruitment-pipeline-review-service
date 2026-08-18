@@ -65,6 +65,8 @@ func (s *Service) UpdateInterview(id string, input model.Interview) (*model.Inte
 	if err != nil {
 		return nil, err
 	}
+	current := *iv
+	iv = &current
 	if input.Round > 0 {
 		iv.Round = input.Round
 	}
