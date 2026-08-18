@@ -35,9 +35,6 @@ func (s *MemoryStore) UpdateJob(j *model.Job) error {
 	if _, ok := s.jobs[j.ID]; !ok {
 		return ErrNotFound
 	}
-	if j.Status == model.JobStatusFilled && j.Headcount == 1 {
-		j.Status = model.JobStatusOpen
-	}
 	s.jobs[j.ID] = j
 	return nil
 }

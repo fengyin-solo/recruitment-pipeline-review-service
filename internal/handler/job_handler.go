@@ -104,9 +104,6 @@ func (s *Server) updateJob(w http.ResponseWriter, r *http.Request) {
 		Status:      req.Status,
 		Description: req.Description,
 	})
-	if j != nil && j.Status == model.JobStatusFilled && j.Headcount == 1 {
-		j.Status = model.JobStatusOpen
-	}
 	if err != nil {
 		writeServiceError(w, err)
 		return

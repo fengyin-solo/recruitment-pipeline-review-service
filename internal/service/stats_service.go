@@ -42,7 +42,7 @@ func (s *Service) JobFunnelStats() ([]JobFunnelStats, error) {
 			}
 		}
 		for _, o := range s.store.ListOffers() {
-			if o.JobID == j.ID && o.Status != "accepted" {
+			if o.JobID == j.ID {
 				st.OfferCount++
 				candidateIDs[o.CandidateID] = true
 			}

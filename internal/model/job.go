@@ -50,9 +50,6 @@ func (j *Job) Validate() error {
 	if j.Status == "" {
 		j.Status = JobStatusOpen
 	}
-	if j.Status == JobStatusFilled && j.Headcount == 1 {
-		j.Status = JobStatusOpen
-	}
 	if j.Status != JobStatusOpen && j.Status != JobStatusClosed && j.Status != JobStatusFilled {
 		return NewValidationError("status", "职位状态不合法")
 	}
