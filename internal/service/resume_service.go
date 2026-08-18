@@ -39,14 +39,7 @@ func (s *Service) ListResumes(filter model.ResumeFilter, page, size int) ([]*mod
 		}
 	}
 	total := len(matched)
-	start := (page - 1) * size
-	if start >= total {
-		return []*model.Resume{}, total, nil
-	}
-	end := start + size
-	if end > total {
-		end = total
-	}
+	start, end := pageBounds(page, size, total)
 	return matched[start:end], total, nil
 }
 

@@ -89,6 +89,33 @@ func TestHandlerListJobs(t *testing.T) {
 	}
 }
 
+// 线上网关偶尔会把空页码转成 0，此时应回退到第 1 页，而不是 panic。
+func TestHandlerListJobsZeroPage(t *testing.T) {
+	srv := newTestServer()
+	srv.svc.CreateJob(model.Job{Title: "Go Dev", Department: "Tech", Level: "P5", Headcount: 1})
+	srv.svc.CreateJob(model.Job{Title: "Java Dev", Department: "Tech", Level: "P5", Headcount: 1})
+	req := httptest.NewRequest(http.MethodGet, "/api/jobs?page=0&size=10", nil)
+	w := httptest.NewRecorder()
+	srv.Routes().ServeHTTP(w, req)
+	if w.Code != http.StatusOK {
+		t.Fatalf("expect 200 for page=0, got %d: %s", w.Code, w.Body.String())
+	}
+	var resp struct {
+		Code int `json:"code"`
+		Data struct {
+			Items      []model.Job      `json:"items"`
+			Pagination httpx.Pagination `json:"pagination"`
+		} `json:"data"`
+	}
+	json.Unmarshal(w.Body.Bytes(), &resp)
+	if resp.Data.Pagination.Total != 2 {
+		t.Errorf("expect total 2, got %d", resp.Data.Pagination.Total)
+	}
+	if len(resp.Data.Items) != 2 {
+		t.Errorf("expect first page (2 items), got %d", len(resp.Data.Items))
+	}
+}
+
 func TestHandlerListJobsFilter(t *testing.T) {
 	srv := newTestServer()
 	srv.svc.CreateJob(model.Job{Title: "Go Dev", Department: "Tech", Level: "P5", Headcount: 1, Status: model.JobStatusOpen})

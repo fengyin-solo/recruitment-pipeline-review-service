@@ -46,14 +46,7 @@ func (s *Service) ListInterviews(filter model.InterviewFilter, page, size int) (
 		return matched[i].CreatedAt.After(matched[j].CreatedAt)
 	})
 	total := len(matched)
-	start := (page - 1) * size
-	if start >= total {
-		return []*model.Interview{}, total, nil
-	}
-	end := start + size
-	if end > total {
-		end = total
-	}
+	start, end := pageBounds(page, size, total)
 	return matched[start:end], total, nil
 }
 
