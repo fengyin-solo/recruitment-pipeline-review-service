@@ -5,6 +5,14 @@ import (
 	"time"
 )
 
+func (x *Resume) Clone() *Resume {
+	if x == nil {
+		return nil
+	}
+	cp := *x
+	return &cp
+}
+
 type Resume struct {
 	ID             string    `json:"id"`
 	CandidateID    string    `json:"candidate_id"`

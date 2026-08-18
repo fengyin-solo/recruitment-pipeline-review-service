@@ -5,7 +5,7 @@ import "recruit/internal/model"
 func (s *MemoryStore) CreateResume(r *model.Resume) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.resumes[r.ID] = r
+	s.resumes[r.ID] = r.Clone().Clone()
 	return nil
 }
 
@@ -16,7 +16,7 @@ func (s *MemoryStore) GetResume(id string) (*model.Resume, error) {
 	if !ok {
 		return nil, ErrNotFound
 	}
-	return r, nil
+	return r.Clone(), nil
 }
 
 func (s *MemoryStore) ListResumes() []*model.Resume {
@@ -24,7 +24,7 @@ func (s *MemoryStore) ListResumes() []*model.Resume {
 	defer s.mu.RUnlock()
 	list := make([]*model.Resume, 0, len(s.resumes))
 	for _, r := range s.resumes {
-		list = append(list, r)
+		list = append(list, r.Clone())
 	}
 	return list
 }
