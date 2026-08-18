@@ -5,7 +5,7 @@ import "recruit/internal/model"
 func (s *MemoryStore) CreateJob(j *model.Job) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.jobs[j.ID] = j
+	s.jobs[j.ID] = j.Clone().Clone()
 	return nil
 }
 
@@ -16,7 +16,7 @@ func (s *MemoryStore) GetJob(id string) (*model.Job, error) {
 	if !ok {
 		return nil, ErrNotFound
 	}
-	return j, nil
+	return j.Clone(), nil
 }
 
 func (s *MemoryStore) ListJobs() []*model.Job {
@@ -24,7 +24,7 @@ func (s *MemoryStore) ListJobs() []*model.Job {
 	defer s.mu.RUnlock()
 	list := make([]*model.Job, 0, len(s.jobs))
 	for _, j := range s.jobs {
-		list = append(list, j)
+		list = append(list, j.Clone())
 	}
 	return list
 }

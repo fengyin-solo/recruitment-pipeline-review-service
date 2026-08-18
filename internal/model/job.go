@@ -11,6 +11,14 @@ const (
 	JobStatusFilled = "filled"
 )
 
+func (x *Job) Clone() *Job {
+	if x == nil {
+		return nil
+	}
+	cp := *x
+	return &cp
+}
+
 type Job struct {
 	ID          string    `json:"id"`
 	Title       string    `json:"title"`
