@@ -59,6 +59,8 @@ func (s *Service) UpdateJob(id string, input model.Job) (*model.Job, error) {
 	if err != nil {
 		return nil, err
 	}
+	current := *j
+	j = &current
 	if input.Title != "" {
 		j.Title = input.Title
 	}
