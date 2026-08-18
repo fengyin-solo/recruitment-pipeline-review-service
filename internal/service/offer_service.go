@@ -103,7 +103,8 @@ func (s *Service) handleOfferAccepted(o *model.Offer) error {
 			acceptedCount++
 		}
 	}
-	if acceptedCount > job.Headcount {
+	// 接受数达到招聘人数即视为职位填满（== headcount 时就应置为 filled）。
+	if acceptedCount >= job.Headcount {
 		job.Status = model.JobStatusFilled
 		job.UpdatedAt = time.Now()
 		if err := s.store.UpdateJob(job); err != nil {
