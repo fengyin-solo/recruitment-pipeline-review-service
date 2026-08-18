@@ -10,6 +10,15 @@ const (
 	CandidateStatusWithdrawn = "withdrawn"
 )
 
+func (x *Candidate) Clone() *Candidate {
+	if x == nil {
+		return nil
+	}
+	cp := *x
+	cp.Skills = append([]string(nil), x.Skills...)
+	return &cp
+}
+
 type Candidate struct {
 	ID                string    `json:"id"`
 	Name              string    `json:"name"`

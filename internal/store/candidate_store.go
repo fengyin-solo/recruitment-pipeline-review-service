@@ -10,7 +10,7 @@ func (s *MemoryStore) CreateCandidate(c *model.Candidate) error {
 			return ErrConflict
 		}
 	}
-	s.candidates[c.ID] = c
+	s.candidates[c.ID] = c.Clone().Clone()
 	return nil
 }
 
@@ -21,7 +21,7 @@ func (s *MemoryStore) GetCandidate(id string) (*model.Candidate, error) {
 	if !ok {
 		return nil, ErrNotFound
 	}
-	return c, nil
+	return c.Clone(), nil
 }
 
 func (s *MemoryStore) GetCandidateByEmail(email string) (*model.Candidate, error) {
@@ -29,7 +29,7 @@ func (s *MemoryStore) GetCandidateByEmail(email string) (*model.Candidate, error
 	defer s.mu.RUnlock()
 	for _, c := range s.candidates {
 		if c.Email == email {
-			return c, nil
+			return c.Clone(), nil
 		}
 	}
 	return nil, ErrNotFound
@@ -40,7 +40,7 @@ func (s *MemoryStore) ListCandidates() []*model.Candidate {
 	defer s.mu.RUnlock()
 	list := make([]*model.Candidate, 0, len(s.candidates))
 	for _, c := range s.candidates {
-		list = append(list, c)
+		list = append(list, c.Clone())
 	}
 	return list
 }
