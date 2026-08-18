@@ -22,6 +22,14 @@ func CanTransitionOffer(from, to string) bool {
 	return false
 }
 
+func (x *Offer) Clone() *Offer {
+	if x == nil {
+		return nil
+	}
+	cp := *x
+	return &cp
+}
+
 type Offer struct {
 	ID          string    `json:"id"`
 	JobID       string    `json:"job_id"`

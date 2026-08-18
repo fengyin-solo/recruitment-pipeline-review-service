@@ -99,9 +99,15 @@ func (s *Service) handleOfferAccepted(o *model.Offer) error {
 	}
 	acceptedCount := 0
 	for _, offer := range s.store.ListOffers() {
+		if offer.ID == o.ID {
+			continue
+		}
 		if offer.JobID == o.JobID && offer.Status == model.OfferStatusAccepted {
 			acceptedCount++
 		}
+	}
+	if o.Status == model.OfferStatusAccepted {
+		acceptedCount++
 	}
 	if acceptedCount >= job.Headcount {
 		job.Status = model.JobStatusFilled

@@ -5,7 +5,7 @@ import "recruit/internal/model"
 func (s *MemoryStore) CreateOffer(o *model.Offer) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.offers[o.ID] = o
+	s.offers[o.ID] = o.Clone().Clone()
 	return nil
 }
 
@@ -16,7 +16,7 @@ func (s *MemoryStore) GetOffer(id string) (*model.Offer, error) {
 	if !ok {
 		return nil, ErrNotFound
 	}
-	return o, nil
+	return o.Clone(), nil
 }
 
 func (s *MemoryStore) ListOffers() []*model.Offer {
@@ -24,7 +24,7 @@ func (s *MemoryStore) ListOffers() []*model.Offer {
 	defer s.mu.RUnlock()
 	list := make([]*model.Offer, 0, len(s.offers))
 	for _, o := range s.offers {
-		list = append(list, o)
+		list = append(list, o.Clone())
 	}
 	return list
 }
