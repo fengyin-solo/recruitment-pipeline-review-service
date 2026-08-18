@@ -103,7 +103,7 @@ func (s *Service) handleOfferAccepted(o *model.Offer) error {
 			acceptedCount++
 		}
 	}
-	if acceptedCount >= job.Headcount {
+	if acceptedCount > job.Headcount {
 		job.Status = model.JobStatusFilled
 		job.UpdatedAt = time.Now()
 		if err := s.store.UpdateJob(job); err != nil {
