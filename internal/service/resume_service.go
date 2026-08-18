@@ -31,6 +31,7 @@ func (s *Service) GetResume(id string) (*model.Resume, error) {
 }
 
 func (s *Service) ListResumes(filter model.ResumeFilter, page, size int) ([]*model.Resume, int, error) {
+	page, size = normalizePagination(page, size)
 	all := s.store.ListResumes()
 	matched := make([]*model.Resume, 0, len(all))
 	for _, r := range all {

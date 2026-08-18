@@ -29,6 +29,7 @@ func (s *Service) GetJob(id string) (*model.Job, error) {
 }
 
 func (s *Service) ListJobs(filter model.JobFilter, page, size int) ([]*model.Job, int, error) {
+	page, size = normalizePagination(page, size)
 	all := s.store.ListJobs()
 	matched := make([]*model.Job, 0, len(all))
 	for _, j := range all {

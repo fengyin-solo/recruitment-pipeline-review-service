@@ -35,6 +35,7 @@ func (s *Service) GetOffer(id string) (*model.Offer, error) {
 }
 
 func (s *Service) ListOffers(filter model.OfferFilter, page, size int) ([]*model.Offer, int, error) {
+	page, size = normalizePagination(page, size)
 	all := s.store.ListOffers()
 	matched := make([]*model.Offer, 0, len(all))
 	for _, o := range all {

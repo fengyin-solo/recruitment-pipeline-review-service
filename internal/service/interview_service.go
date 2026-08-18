@@ -35,6 +35,7 @@ func (s *Service) GetInterview(id string) (*model.Interview, error) {
 }
 
 func (s *Service) ListInterviews(filter model.InterviewFilter, page, size int) ([]*model.Interview, int, error) {
+	page, size = normalizePagination(page, size)
 	all := s.store.ListInterviews()
 	matched := make([]*model.Interview, 0, len(all))
 	for _, i := range all {
